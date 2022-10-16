@@ -1,4 +1,6 @@
 # NLP_Resume
+Run file app.py
+
 pip install pyresparser
 
 pip install python-docx
