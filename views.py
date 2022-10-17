@@ -28,6 +28,7 @@ def index():
     Programming_Languages()
     University()
     skills = library + program + programming_languages
+    
     return render_template("page_resume.html", skills=skills)
 
 

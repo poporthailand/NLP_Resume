@@ -2,7 +2,6 @@ $(document).ready(function () {
   var skills = [];
   var tmp = $("#skills").text().split("\n");
   var number = 0;
-
   for (let index = 0; index < tmp.length; index++) {
     tmp[index] = tmp[index].replace(/^\s+/, "");
     if (tmp[index] != "") {
