@@ -35,26 +35,53 @@
     <div id="navbar"></div>
     <div class="m-5 rounded" style="background-color: #aed4ae">
       <div class="m-5">
-        <p class="h3 pt-3" style="margin-top: 100px">Resume</p>
-        <input
-          class="form-control mt-2"
-          type="file"
-          id="formFileMultiple"
-          multiple
-        />
+        <div class="d-flex" style="margin-top: 100px">
+          <p class="h3 pt-3">Resume</p>
+          {% if number_resume != 0 %} 
+          <p class="ms-1 mt-4">(Uploaded : {{number_resume}} file)</p>
+          {% endif %}
+        </div>
+        
+        <form action="/upload_files" method=post enctype=multipart/form-data>
+          <div class="d-flex mt-1">
+            <input
+            class="form-control "
+            type="file"
+            id="formFileMultiple"
+            name="files"
+            multiple
+          />
+            <button id="upload" class="btn btn-success ms-2">upload</button>
+          </div>
+        </form>
+        
         <div class="d-flex">
           <p class="h3 mt-3">Skills</p>
           <p class="ms-1 mt-4">(ex. python, javascript, photoshop)</p>
         </div>
         <div id="block_skill" class="d-flex flex-wrap"></div>
         <div class="d-flex">
-          <input class="form-control" type="text" id="search_skill" />
-          <button id="add" class="btn btn-success ms-2">Add</button>
-          <button id="clear" class="btn btn-danger ms-2">Clear</button>
+
+          {% if number_resume == 0 %} 
+          <input class="form-control" type="text" id="search_skill" disabled/>
+          <a id="add" class="btn btn-success ms-2 disabled">Add</a>
+          <a id="clear" class="btn btn-danger ms-2 disabled">Clear</a>
+          {% else %}
+          <input class="form-control" type="text" id="search_skill"/>
+          <a id="add" class="btn btn-success ms-2">Add</a>
+          <a id="clear" class="btn btn-danger ms-2">Clear</a>
+          {% endif %} 
         </div>
-        <div class="text-center mt-4 pb-4">
-          <button id="submit" class="btn btn-success btn-lg">Submit</button>
-        </div>
+        <form action="/submit_files" method=post>
+          <div class="text-center mt-4 pb-4">
+            {% if number_resume == 0 %} 
+            <button id="submit" class="btn btn-success btn-lg disabled">Submit </button>
+            {% else %}
+            <button id="submit" class="btn btn-success btn-lg">Submit</button>
+            {% endif %} 
+            <input class="d-none" id="input_skills" type="text" name="input_skills">
+          </div>
+        </form>
       </div>
     </div>
  
@@ -64,6 +91,8 @@
       {% endfor %}
     </div>
 
+    
+  
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
     <!-- ✅ load jQuery UI ✅ -->
     <script

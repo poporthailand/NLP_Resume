@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NLP by IMRR</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    
+    <style>
+      body {
+        background-image: url("../static/img/bg.png");
+      }
+      #input1 {
+        background-color: #212529;
+        border: none;
+      }
+    </style>
+</head>
+<body>
+    <div id="navbar"></div>
+    
+      <div class="d-inline-flex ms-5" style="margin-top:80px; background-color: #aed4ae; border-radius: 20px;" >
+        <p class="h2 p-3">required skill : </p>
+        <p id="text_skills" style="background-color: #F5E5C4; border-radius: 20px;" class="m-1 h2 p-3">{{ text_skills }}</p>
+      </div>
+    
+    
+    
+    <div class="bg-light ms-5 me-5 mt-3">
+      <table class="table table-hover">
+        <thead style="background-color: #aed4ae;">
+          <tr>
+            <th>No.</th>
+            <th>Name</th>
+            <th>University</th>
+            <th>Skills</th>
+            <th>Score</th>
+            <th>Email</th>
+            <th>PDF</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for i in range(Data|length) %}
+          <tr>
+            <td>{{Data[i]['range']}}</td>
+            <td>{{Data[i]['name']}}</td>
+            <td>{{Data[i]['college_name']}}</td>
+            <td id="skills_{{i}}">{{Data[i]['skills']}}</td>
+            <td>{{Data[i]['score']}}</td>
+            <td>{{Data[i]['email']}}</td>
+            <td>PDF.pdf</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="d-none" id="data_length">{{ Data|length }}</div>
+    
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <script src="../static/script/script_page_result_resume.js"></script>
+    <script src="../static/script/script_navbar.js"></script>
+</body>
+</html>
