@@ -14,6 +14,7 @@ from nltk.stem import WordNetLemmatizer
 from tika import parser  
 from bs4 import BeautifulSoup
 import requests
+import webbrowser
 
 app = Flask(__name__)
 views = Blueprint(__name__, "views")
@@ -103,19 +104,35 @@ def result_resume():
     for i in range(len(file_resume)):
         data_resume = []
         file_resume[i] = os.path.join("Static","Save_Resume", file_resume[i])
-        Data.append({"name" : "" , "email" : "" , "skills" : [] , "college_name" : "" , "score" : 0 , "range" : 0} )
+        Data.append({"name" : "" , "email" : "" , "skills" : [] , "college_name" : "" , "score" : 0 , "range" : 0 , "skill_color" : [] , "path" : file_resume[i]} )
         Check_Name(file_resume[i],i)
         Data_resume(file_resume[i])
         Check_Email(file_resume[i],i)
         Check_University(i)
         Check_Skill(i)
         Count_Score(i)
+        Check_Skill_Color(i)
     #Sort Data
     Sort_Data()
     Range_Data()
+    print(Data)
+    return render_template("page_result_resume.html" , Data = Data , text_skills = text_skills )
 
-    return render_template("page_result_resume.html" , Data = Data , text_skills = text_skills)
-
+@views.route("/pdf", methods=["GET", "POST"])
+def pdf():
+    global Data
+    global data_resume 
+    global text_skills
+    
+    c = webbrowser.Chrome(r'C:\Program Files\Google\Chrome\Application\chrome.exe')
+    for i in range(len(Data)):
+        tmp = 'text_pdf_' + str(i)
+        try:
+            if request.form[tmp]:
+                c.open(os.path.abspath(Data[i]['path']))
+        except:
+            pass
+    return render_template("page_result_resume.html" , Data = Data , text_skills = text_skills )
 
 def Library():
     global library
@@ -348,7 +365,25 @@ def Range_Data():
                 Data[i]['range'] = range_data
         else:
             Data[i]['range'] = range_data
-            
+
+def Check_Skill_Color(num):
+    # number 1 : Color bg-info
+    # number 2 : Color bg-warning
+    # number 3 : Color bg-danger
+    for i in Data[num]['skills']:
+        if i in text_skills:
+            Data[num]['skill_color'].append("bg-success")
+        else:
+            for k in library:
+                if i == k:
+                    Data[num]['skill_color'].append("bg-info")
+            for k in program:
+                if i == k:
+                    Data[num]['skill_color'].append("bg-warning")
+            for k in programming_languages:
+                if i == k:
+                    Data[num]['skill_color'].append("bg-danger")
+
 
 def Data_resume(path):
     for i in parser.from_file(path)['content'].lower().split():

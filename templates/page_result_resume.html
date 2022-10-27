@@ -16,7 +16,7 @@
       integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
       crossorigin="anonymous"
     ></script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@2.16.105/build/pdf.min.js"></script>
     <style>
       body {
         background-image: url("../static/img/bg.png");
@@ -34,9 +34,7 @@
         <p class="h2 p-3">required skill : </p>
         <p id="text_skills" style="background-color: #F5E5C4; border-radius: 20px;" class="m-1 h2 p-3">{{ text_skills }}</p>
       </div>
-    
-    
-    
+
     <div class="bg-light ms-5 me-5 mt-3">
       <table class="table table-hover">
         <thead style="background-color: #aed4ae;">
@@ -56,10 +54,18 @@
             <td>{{Data[i]['range']}}</td>
             <td>{{Data[i]['name']}}</td>
             <td>{{Data[i]['college_name']}}</td>
-            <td id="skills_{{i}}">{{Data[i]['skills']}}</td>
+            <td>
+              {% for j in range(Data[i]['skills']|length) %}
+              <div class="d-inline-flex">
+                <div class="mt-2 p-1 me-2 text-white {{Data[i]['skill_color'][j]}} rounded">
+                  {{Data[i]['skills'][j]}}
+                </div>
+              </div>
+              
+              {% endfor %}</td>
             <td>{{Data[i]['score']}}</td>
             <td>{{Data[i]['email']}}</td>
-            <td>PDF.pdf</td>
+            <td><form action="/pdf" method=post><button id="btn_pdf_{{i}}" class="btn btn-success" type="submit">PDF</button><input class="d-none" id="text_pdf_{{i}}" name="text_pdf_{{i}}" type="text"></form></td>
           </tr>
           {% endfor %}
         </tbody>
