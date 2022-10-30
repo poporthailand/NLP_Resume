@@ -82,7 +82,7 @@ def upload_files():
                 #number_file
                 number_resume = len(files)
     except :
-        print("Something")
+        pass
 
     return render_template("index.html" , skills=skills , number_resume=number_resume)
 
@@ -96,7 +96,6 @@ def submit_files():
     sub_text_skills = []
     text_skills = request.form['input_skills']
     sub_text_skills = text_skills.split(",")
-    print(sub_text_skills)
     if number_resume != 0 and text_skills != "" :   
         return redirect('/result_resume')
     else:
@@ -126,7 +125,6 @@ def result_resume():
     Sort_Data()
     Range_Data()
     Sort_Skill()
-    print(Data)
     return render_template("index.html" , sub_text_skills=sub_text_skills, skills=skills, number_resume=number_resume, Data = Data , text_skills = text_skills )
 
 @views.route("/pdf", methods=["GET", "POST"])
@@ -134,13 +132,11 @@ def pdf():
     global Data
     global data_resume 
     global text_skills
-    print("PDF Done")
     c = webbrowser.Chrome(r'C:\Program Files\Google\Chrome\Application\chrome.exe')
     for i in range(len(Data)):
         tmp = 'text_pdf_' + str(i)
         try:
             if request.form[tmp]:
-                print("PDF Done!!!!")
                 c.open(os.path.abspath(Data[i]['path']))
         except:
             pass
