@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@700&display=swap" rel="stylesheet">
+    
+    <title>Document</title>
+</head>
+<style>
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+.pofix{
+    padding: 20px;
+    width: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+}
+.pofixArrow{
+    padding: 20px;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    right: 100px;
+    margin-bottom: 50px;
+}
+body{
+    height: 2158px;
+    overflow-y: scroll;
+    overflow-x: hidden; /* hides the horizontal scroll bar */
+    background-color: rgb(182, 213, 240);
+}
+.loader{
+    pointer-events: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border:3px solid transparent;
+    border-top-color: aliceblue;
+    animation: an1 1s ease infinite;
+}
+@keyframes an1 {
+    0%{
+        transform: rotate(0turn);
+    }
+    100%{
+        transform: rotate(1turn);
+    }
+}
+.loader_page{
+    position: fixed;
+    z-index: 99;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #B6D5F0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loader_page > img {
+    width: 600px;
+}
+
+.loader_page.hidden{
+    animation: fadeOut 1s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes fadeOut {
+    100% {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+</style>
+<body style="scroll-behavior: smooth;margin: 0;">
+    <div id="loader_page" class="loader_page d-none">
+        <img src="../static/img/loading.gif" alt="loading...">
+    </div>
+    
+    <nav id="navbar" class="navbar bg-warning pofix fixed-top" style="font-family: 'Titillium Web', sans-serif;list-style: none;margin: 0;padding: 0; display:flex;">
+        <div class="container-fluid ">
+            <a class="d-flex align-items-center navbar-brand ">
+                <img src="/static/img/futuristic.jpg" alt="Logo" width="80" class="d-inline-block align-text-top" style="border: 3px solid black;border-radius: 15px;">
+                <h3 class="ms-2">Analysis of Resume </h3>
+            </a>
+            
+        </div>
+    </nav>
+    
+    <section style="padding-top: 100px;height: 1050px;">
+        <div class="container-fluid" style="text-align: center;">
+            <div class="row" style="margin-top: 20px;">
+                <img src="/static/img/newspaper.png" alt="newspaper" style="width: 200px;height: 200px;" class="center">
+            </div>
+            <div class="row">
+            </div>
+            <div class="row" style="font-family: 'Titillium Web', sans-serif;">
+                <div style="font-size:38px;">RESUME</div>
+            </div>
+            <div class="row" style="margin-top: 20px;text-align: center;">
+                <center>
+                <img src="/static/img/file.png" style="width: 60px;height: 60px;">
+                {% if number_resume != 0 %} 
+                (Uploaded : {{number_resume}} file)
+                
+                {% else %}
+                please choose your files
+                </center>
+                {% endif %}
+            </div>
+            <div class="row" style="margin-top: 30px;font-family: 'Titillium Web', sans-serif;">
+                <div class="mb-3">
+                    <table align="center">
+                        <tr>
+                            <form action="/upload_files" method=post enctype=multipart/form-data>
+                                <td>
+                                    <input name="files" class="form-control center" type="file" id="formFileMultiple" multiple style="width: 400px;border:4px solid black;border-radius: 0;">
+                                </td>
+                                <td style="padding-left: 20px;">
+                                    <button id="btn_Upload" class="btn btn-warning btnLoad" style="border: 4px solid black;border-radius:0;color:black">UPLOAD</button>
+                                </td>
+                            </form>
+                            <form action="/" method=post enctype=multipart/form-data>
+                                <td style="padding-left: 20px;">
+                                    {% if number_resume == 0%}
+                                    <button id="btnClear" class="btn btn-danger btnClear disabled" style="border: 4px solid black;border-radius:0;color:black">CLEAR</button>
+                                    {% else %}
+                                    <button id="btnClear" class="btn btn-danger btnClear" style="border: 4px solid black;border-radius:0;color:black">CLEAR</button>
+                                    {% endif %}
+                                </td>
+                            </form>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div style="width: 60%;border:2px solid black;background-color: black;border-radius: 5px;margin-top: 30px;" class="center"></div>
+            
+            <div class="row" style="margin-top: 30px;font-family: 'Titillium Web', sans-serif;font-size: 39px;">
+                <center><img src="/static/img/candidates.png" style="width: 64px;height: 58px;"> SKILLS </center>
+            </div>
+            <div style="margin-top: 20px;">
+                <b>(Example : python , javascript , photoshop etc.)</b>
+            </div>
+
+            <div class="d-none" id="skills">
+                {% for skill in skills %} 
+                {{ skill }} 
+                {% endfor %}
+            </div>
+
+            <div class="row" style="margin-top: 30px;">
+                <center>
+                    <div style="width: 550px;" id="block_skill" class="d-flex flex-wrap"></div>
+                </center>
+                {% if number_resume == 0 %} 
+                <table align="center" style="width: 600px;font-family: 'Titillium Web', sans-serif;">
+                    <tr>
+                        <td>
+                            <input disabled class="form-control center" type="text" id="search_skill" multiple style="width: 400px;border:4px solid black;border-radius: 0;">
+                        </td>
+                        <td>
+                            <input class="btn btn-warning disabled" type="button" value="ADD" style="border: 4px solid black;border-radius:0;color:black">
+                        </td>
+                        <td>
+                            <input class="btn btn-danger disabled" type="button" value="CLEAR" style="border: 4px solid black;border-radius:0;color:black">
+                        </td>
+                    </tr>
+                </table>
+                {% else %}   
+                <table align="center" style="width: 600px;font-family: 'Titillium Web', sans-serif;">
+                    <tr>
+                        <td>
+                            <input class="form-control center" type="text" id="search_skill" multiple style="width: 400px;border:4px solid black;border-radius: 0;">
+                        </td>
+                        <td>
+                            <input id="add" class="btn btn-warning" type="button" value="ADD" style="border: 4px solid black;border-radius:0;color:black">
+                        </td>
+                        <td>
+                            <input id="clear" class="btn btn-danger" type="button" value="CLEAR" style="border: 4px solid black;border-radius:0;color:black">
+                        </td>
+                    </tr>
+                </table>
+                {% endif %} 
+            </div>
+            <form action="/submit_files" method=post>
+                <div style="margin-top: 30px;font-family: 'Titillium Web', sans-serif;">
+                    <button id="submit" class="btn btn-success disabled" style="border: 4px solid black;border-radius:0;color:black">SUBMIT</button>
+                    <input class="d-none" id="input_skills" type="text" name="input_skills">  
+                   
+                </div>
+            </form>    
+            
+        </div>
+    </section>
+    <section style="margin-top: -19px;padding-bottom: 50px;">
+        <div class="container-fluid" style="text-align: center;padding-bottom: 100px;padding-top: 190px;">
+            <div class="row" style="margin-top: 20px;">
+                <img src="/static/img/ranking.png" alt="newspaper" style="width: 200px;height: 200px;" class="center">
+            </div>
+            <div class="row" style="font-family: 'Titillium Web', sans-serif;">
+                <div style="font-size:38px;">RANKING</div>
+            </div>
+            <div class="row center" style="font-family: 'Titillium Web', sans-serif;margin-top: 30px;">
+                The results of the application's profile analysis
+            </div>
+            <center>
+                <div id="result_data" class="d-none">
+                    <div class="d-inline-flex ms-5" style="margin-top:80px; background-color: rgb(253, 197, 76); border-radius: 20px;" >
+                        <p class="h2 p-3">required skill : </p>
+                        {% for i in sub_text_skills %}
+                        <p style="border-radius: 20px;" class="m-1 h3 p-3 bg-success text-white">{{ i }}</p>
+                        {% endfor %}
+                    </div>
+                    <div>
+                        <div class="d-inline-flex align-items-center mt-3 flex-wrap">
+                            <p style="width: 20px; height: 20px;" class="bg-success"></p>
+                            <p class="ms-1"> = Matching skills,</p>
+                            <p style="width: 20px; height: 20px;" class="bg-danger ms-3"></p>
+                            <p class="ms-1"> = Programming languages,</p>
+                            <p style="width: 20px; height: 20px;" class="bg-secondary ms-3"></p>
+                            <p class="ms-1"> = Program,</p>
+                            <p style="width: 20px; height: 20px;" class="bg-info ms-3"></p>
+                            <p class="ms-1"> = Library</p>
+                        </div>
+                    </div>
+                    
+                    
+                      <table id="tableResult" class="table" style="border: 1px solid black;width:1300px;text-align: center;margin-top: 20px;font-family: 'Titillium Web', sans-serif">
+                        <thead style="background-color: rgb(103, 159, 187);color: white;">
+                            <tr>
+                                <th scope="col" class="columnHeader">NO.</th>
+                                <th scope="col" class="columnHeader">NAME</th>
+                                <th scope="col" class="columnHeader">UNIVERSITY</th>
+                                <th scope="col" class="columnHeader">SKILLS</th>
+                                <th scope="col" class="columnHeader">SCORE</th>
+                                <th scope="col" class="columnHeader">EMAIL</th>
+                                <th scope="col" class="columnHeader">PDF</th>
+                                <th scope="col" class="columnHeader">GMAIL</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-group-divider">
+                            {% for i in range(Data|length) %}
+                            {% if i == 0 %}
+                            <tr style="background-color: rgb(253, 197, 76);">
+                            {% elif i == 1 %}
+                            <tr style="background-color: rgb(250, 224, 169);">
+                            {% else %}    
+                            <tr>
+                            {% endif %}
+                                <td>{{Data[i]['range']}}</td>
+                                <td>{{Data[i]['name']}}</td>
+                                <td>{{Data[i]['college_name']}}</td>
+                                <td>
+                                {% for j in range(Data[i]['skills']|length) %}
+                                    <div class="d-inline-flex">
+                                    <div class="mt-2 p-1 me-2 text-white {{Data[i]['skill_color'][j]}} rounded">
+                                        {{Data[i]['skills'][j]}}
+                                    </div>
+                                    </div>          
+                                {% endfor %}</td>
+                                <td>{{Data[i]['score']}}</td>
+                                <td>{{Data[i]['email']}}</td>
+                                <td class="text-center"><form action="/pdf" method=post><input type="image" id="btn_pdf_{{i}}" style="width: 20px;" src="../static/img/pdf.png"><input class="d-none" id="text_pdf_{{i}}" name="text_pdf_{{i}}" type="text"></form></td>
+                                <td class="text-center"><form action="/gmail" method=post><input type="image" id="btn_gmail_{{i}}" style="width: 20px;" src="../static/img/gmail.png"><input class="d-none" id="text_gmail_{{i}}" name="text_gmail_{{i}}" type="text"></form></td>
+                            </tr>
+                            {% endfor %}
+                          </tbody>
+                    </table>
+                </div>
+                
+            </center>
+            <div style="width: 60%;border:2px solid black;background-color: black;border-radius: 5px;margin-top: 30px;" class="center"></div>
+
+            <div class="row center" style="font-family: 'Titillium Web', sans-serif;margin-top: 30px;">
+                <input id="btnBack" class="btn " type="button" value="TOP" style="width: 90px;border: 4px solid black;border-radius:0;color:black;background-color: rgb(87, 126, 161);">
+            </div>
+        </div>
+        
+        <img src="/static/img/arrow.png" style="width: 130px;height: 120px;opacity: 70%;"  class="scrollToup pofixArrow" hidden>
+         
+    </section>
+
+    <div class="d-none" id="data_length">{{ Data|length }}</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"> </script>
+    <script src="/static/script/jqscript.js"></script> 
+    <!-- ✅ load jQuery UI ✅ -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"
+      integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <!-- ✅ Load CSS file for jQuery ui  -->
+    <link
+      href="https://code.jquery.com/ui/1.12.1/themes/ui-lightness/jquery-ui.css"
+      rel="stylesheet"
+    />
+    <script src="../static/script/script_page_resume.js"></script>
+    <script src="../static/script/script_page_result_resume.js"></script>
+</body>
+</html>
