@@ -140,7 +140,7 @@ def pdf():
                 c.open(os.path.abspath(Data[i]['path']))
         except:
             pass
-    return render_template("index.html" , skills=skills, number_resume=number_resume , Data = Data , text_skills = text_skills )
+    return render_template("index.html" , sub_text_skills=sub_text_skills, skills=skills, number_resume=number_resume , Data = Data , text_skills = text_skills )
 
 @views.route("/gmail", methods=["GET", "POST"])
 def gmail():
@@ -159,7 +159,7 @@ def gmail():
                 keyboard.write(Data[i]['email'])
         except:
             pass
-    return render_template("index.html" , skills=skills, number_resume=number_resume, Data = Data , text_skills = text_skills )
+    return render_template("index.html" , sub_text_skills=sub_text_skills, skills=skills, number_resume=number_resume, Data = Data , text_skills = text_skills )
 
 def Library():
     global library
