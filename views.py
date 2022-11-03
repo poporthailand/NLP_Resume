@@ -31,13 +31,8 @@ sub_text_skills = []
 
 first_open = True
 
-@views.route("/loading", methods=["GET", "POST"])
-def loading():
-    return render_template("loading.html")
-
 @views.route("/", methods=["GET", "POST"])
 def index():
-    redirect('/loading')
     global number_resume
     global first_open
     global skills
@@ -155,7 +150,7 @@ def gmail():
         try:
             if request.form[tmp]:
                 c.open(url)
-                time.sleep(4)
+                time.sleep(8)
                 keyboard.write(Data[i]['email'])
         except:
             pass
