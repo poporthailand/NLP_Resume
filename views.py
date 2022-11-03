@@ -2,6 +2,9 @@
 import re
 import pandas as pd
 import nltk
+nltk.download('wordnet')
+nltk.download('omw-1.4')
+nltk.download('stopwords')
 from flask import Blueprint, render_template, request, jsonify, redirect, url_for
 from flask import Flask
 import warnings
